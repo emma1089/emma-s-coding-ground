@@ -1,0 +1,29 @@
+//实现keyboard上方的panel view
+-(void)loadPanel {
+    CGFloat width = [[UIScreen mainScreen]bounds].size.width;
+    UIView *panel = [[UIView alloc]init];
+    [panel setFrame:CGRectMake(0, 0, 375, 50)];
+    [panel setBackgroundColor:[UIColor grayColor]];
+    UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(50, 0, 50, 50)];
+    UIButton *saveButton = [[UIButton alloc]initWithFrame:CGRectMake(width - 50 - 50, 0, 50, 50)];
+    [cancelButton addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setBackgroundImage:[UIImage imageNamed:@"cancel"] forState:normal];
+    [saveButton addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
+    [saveButton setBackgroundImage:[UIImage imageNamed:@"save"] forState:normal];
+    [panel addSubview:cancelButton];
+    [panel addSubview:saveButton];
+    self.budgetTextfield.inputAccessoryView = panel;
+}
+-(void)cancelAction {
+    [self.budgetTextfield resignFirstResponder];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.budgetTextfield.text = [NSString stringWithFormat:@"%@%.2f", @"$", [defaults doubleForKey:@"Budget"]];
+
+}
+-(void)saveAction {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setDouble:[self.budgetTextfield.text doubleValue]  forKey:@"Budget"];
+    self.budgetTextfield.text = [NSString stringWithFormat:@"%@%.2f", @"$", [self.budgetTextfield.text doubleValue]];
+    [self.budgetTextfield resignFirstResponder];
+    [self loadSecondPanel];
+}
