@@ -1,0 +1,2 @@
+//为什么在编辑状态下，memoview的键盘总是下不去
+resign textfield是不够的，必须在这之前resign textview
